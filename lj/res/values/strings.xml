@@ -39,7 +39,7 @@
 	<string name="extracting_response">Extracting response...</string>
 	<string name="status">Status</string>
 	<string name="verify_ok">Login and Password are ok!</string>
-	<string name="null_answer">Can't find any blogs for this user (null
+	<string name="null_answer">Can\'t find any blogs for this user (null
 		answer).</string>
 	<string name="alert_dialog_two_buttons_title">Really clear post data?</string>
 	<string name="ok">OK</string>
