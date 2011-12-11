@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical" android:layout_width="fill_parent"
+	android:layout_height="fill_parent" android:gravity="center"
+	android:background="#99ccff">
+	<LinearLayout android:id="@+id/LinearLayout01"
+		android:layout_width="wrap_content" android:layout_height="wrap_content"
+		android:background="@drawable/lj_logo_land"></LinearLayout>
+	<Button android:id="@+id/main_bt_post" android:layout_height="wrap_content"
+		android:textSize="20sp" android:layout_width="300sp"></Button>
+	<LinearLayout android:id="@+id/LinearLayout02"
+		android:layout_width="wrap_content" android:layout_height="wrap_content">
+	</LinearLayout>
+	<Button android:layout_height="wrap_content" android:id="@+id/main_bt_ep"
+		android:textSize="20sp" android:layout_width="300sp"></Button>
+	<LinearLayout android:id="@+id/LinearLayout03"
+		android:layout_width="wrap_content" android:layout_height="wrap_content">
+	</LinearLayout>
+	<Button android:layout_height="wrap_content" android:id="@+id/main_bt_exit"
+		android:textSize="20sp" android:layout_width="300sp"></Button>
+</LinearLayout>

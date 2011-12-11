@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">SK-LJ</string>
+	<string name="profile_manager">Edit profile</string>
+	<string name="login">Login</string>
+	<string name="password">Password</string>
+	<string name="save">Save</string>
+	<string name="createpost">Create post</string>
+	<string name="post">Post</string>
+	<string name="subject">Subject</string>
+	<string name="blog_not_configured">Blog is not configured</string>
+	<string name="filled_bad">Some fields filled bad</string>
+	<string name="conf_first">You should configure blog at first</string>
+	<string name="unable_to_publish">Unable to publish</string>
+	<string name="fill_the_post_field">Please, fill the Post field to publish</string>
+	<string name="publish_status">Publish status</string>
+	<string name="publish_ok">Publish Ok!</string>
+	<string name="publish_failed">Publish failed!</string>
+	<string name="code_4">Got a bad response from the server. Check
+		connectivity, username and password!</string>
+	<string name="publishing_blog_entry">Publishing blog entry</string>
+	<string name="starting_to_publish_blog_entry">Starting to publish blog entry...</string>
+	<string name="started_publishing">Started publishing...</string>
+	<string name="preparing_blog_config">Preparing blog config...</string>
+	<string name="authenticating">Authenticating...</string>
+	<string name="contacting_server">Contacting server...</string>
+	<string name="creating_new_entry">Creating new entry...</string>
+	<string name="done">Done...</string>
+	<string name="exit">Exit</string>
+	<string name="verify">Verify</string>
+	<string name="about1">Mihail Vasiliev - programmer</string>
+	<string name="back">Back</string>
+	<string name="about2">Alena Blinova - tech writer, tester</string>
+	<string name="about3">Ekaterina Polovinkina - tech writer,
+		tester</string>
+	<string name="about">About program</string>
+	<string name="clear">Clear</string>
+	<string name="prepare">Preparing API ...</string>
+	<string name="extracting_response">Extracting response...</string>
+	<string name="status">Status</string>
+	<string name="verify_ok">Login and Password are ok!</string>
+	<string name="null_answer">Can't find any blogs for this user (null
+		answer).</string>
+	<string name="alert_dialog_two_buttons_title">Really clear post data?</string>
+	<string name="ok">OK</string>
+	<string name="cancel">Cancel</string>
+</resources>
