@@ -8,11 +8,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-public class BlogConfigDBAdapter {
+public class BlogDBAdapter {
 	public static final String KEY_LOGIN = "login";
 	public static final String KEY_PASSWORD = "password";
 	public static final String KEY_ROWID = "_id";
-	private static final String TAG = "BlogConfigDBAdapter";
+	private static final String TAG = "BlogDBAdapter";
 	private DatabaseHelper mDbHelper;
 	private SQLiteDatabase mDb;
 	private static final String DATABASE_CREATE = "create table blogconfig (_id integer primary key autoincrement, "
@@ -42,11 +42,11 @@ public class BlogConfigDBAdapter {
 		}
 	}
 
-	public BlogConfigDBAdapter(Context ctx) {
+	public BlogDBAdapter(Context ctx) {
 		this.mCtx = ctx;
 	}
 
-	public BlogConfigDBAdapter open() throws SQLException {
+	public BlogDBAdapter open() throws SQLException {
 		mDbHelper = new DatabaseHelper(mCtx);
 		mDb = mDbHelper.getWritableDatabase();
 		return this;

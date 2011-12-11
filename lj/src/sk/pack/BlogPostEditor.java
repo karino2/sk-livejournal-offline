@@ -3,7 +3,7 @@ package sk.pack;
 import java.sql.Date;
 
 import sk.pack.util.AlertUtil;
-import sk.pack.db.BlogConfigDBAdapter;
+import sk.pack.db.BlogDBAdapter;
 import sk.pack.db.SpannableBufferHelper;
 import sk.pack.BlogConfigConstants;
 import sk.pack.BlogInterface;
@@ -49,7 +49,7 @@ public class BlogPostEditor extends Activity {
 	private static final int GROUP_BASIC = 0;
 	private static final int GROUP_EMBED = 2;
 	int publishStatus = 0;
-	private BlogConfigDBAdapter mDbHelper;
+	private BlogDBAdapter mDbHelper;
 	String login = " ", password = " ";
 
 	protected Dialog onCreateDialog(int id) {
@@ -80,7 +80,7 @@ public class BlogPostEditor extends Activity {
 		bBody = (EditText) findViewById(sk.pack.R.id.edit_et_post);
 		bSubject = (EditText) findViewById(sk.pack.R.id.edit_et_subject);
 		b = new BlogEntryBean();
-		mDbHelper = new BlogConfigDBAdapter(this);
+		mDbHelper = new BlogDBAdapter(this);
 		try {
 			mDbHelper.open();
 		} catch (Exception e) {
@@ -388,22 +388,22 @@ public class BlogPostEditor extends Activity {
 		try {
 			Cursor bc = mDbHelper.fetchConfig(ProfileManager.CONFIG_ROW);
 			startManagingCursor(bc);
-			int iq = bc.getColumnIndexOrThrow(BlogConfigDBAdapter.KEY_LOGIN);
+			int iq = bc.getColumnIndexOrThrow(BlogDBAdapter.KEY_LOGIN);
 			login = bc.getString(iq);
 			password = bc.getString(bc
-					.getColumnIndexOrThrow(BlogConfigDBAdapter.KEY_PASSWORD));
+					.getColumnIndexOrThrow(BlogDBAdapter.KEY_PASSWORD));
 
 		} catch (Exception e) {
 		}
 		try {
 			Cursor bc = mDbHelper.fetchConfig(ProfileManager.POST_ROW);
 			startManagingCursor(bc);
-			int i = bc.getColumnIndexOrThrow(BlogConfigDBAdapter.KEY_LOGIN);
+			int i = bc.getColumnIndexOrThrow(BlogDBAdapter.KEY_LOGIN);
 			String str = bc.getString(i);
 			if (!str.equals(" "))
 				bSubject.setText(str);
 			str = bc.getString(bc
-					.getColumnIndexOrThrow(BlogConfigDBAdapter.KEY_PASSWORD));
+					.getColumnIndexOrThrow(BlogDBAdapter.KEY_PASSWORD));
 			if (!str.equals(" ")) {
 				Spannable text = helper.XHTMLToSpannable(str);
 				bBody.setText(text);

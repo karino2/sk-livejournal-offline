@@ -1,6 +1,6 @@
 package sk.pack;
 
-import sk.pack.db.BlogConfigDBAdapter;
+import sk.pack.db.BlogDBAdapter;
 import sk.pack.util.AlertUtil;
 import android.app.Activity;
 import android.content.Intent;
@@ -17,14 +17,14 @@ import android.widget.Button;
 public class LJ extends Activity {
 	private static final String TAG = "MainActivity";
 	private Button postButton, editButton, exitButton;
-	private BlogConfigDBAdapter mDbHelper;
+	private BlogDBAdapter mDbHelper;
 	private String login = " ", password = " ";
 	private boolean isBlogConfigOk = false;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
-		mDbHelper = new BlogConfigDBAdapter(this);
+		mDbHelper = new BlogDBAdapter(this);
 		try {
 			mDbHelper.open();
 		} catch (Exception e) {
@@ -86,9 +86,9 @@ public class LJ extends Activity {
 			Cursor bc = mDbHelper.fetchConfig(ProfileManager.CONFIG_ROW);
 			startManagingCursor(bc);
 			login = bc.getString(bc
-					.getColumnIndexOrThrow(BlogConfigDBAdapter.KEY_LOGIN));
+					.getColumnIndexOrThrow(BlogDBAdapter.KEY_LOGIN));
 			password = bc.getString(bc
-					.getColumnIndexOrThrow(BlogConfigDBAdapter.KEY_PASSWORD));
+					.getColumnIndexOrThrow(BlogDBAdapter.KEY_PASSWORD));
 			int i = login.length();
 			int j = password.length();
 			if (!((i < 1) || (j < 1))) {

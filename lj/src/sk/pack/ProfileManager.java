@@ -6,7 +6,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 
-import sk.pack.db.BlogConfigDBAdapter;
+import sk.pack.db.BlogDBAdapter;
 import android.app.Activity;
 import android.database.Cursor;
 import android.util.Log;
@@ -24,13 +24,13 @@ public class ProfileManager extends Activity {
 	private EditText mPassword;
 	private final String TAG = "BlogConfigEditor";
 	private Button button;
-	private BlogConfigDBAdapter mDbHelper;
+	private BlogDBAdapter mDbHelper;
 	private String oldLogin;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.editdialog);
-		mDbHelper = new BlogConfigDBAdapter(this);
+		mDbHelper = new BlogDBAdapter(this);
 		try {
 			mDbHelper.open();
 		} catch (Exception e) {
@@ -72,13 +72,13 @@ public class ProfileManager extends Activity {
 			Cursor bc = mDbHelper.fetchConfig(TEMP_CONFIG_ROW);
 			startManagingCursor(bc);
 			String str = bc.getString(bc
-					.getColumnIndexOrThrow(BlogConfigDBAdapter.KEY_LOGIN));
+					.getColumnIndexOrThrow(BlogDBAdapter.KEY_LOGIN));
 			mLogin.setText(str);
 			if (oldLogin == null) {
 				oldLogin = str;
 			}
 			mPassword.setText(bc.getString(bc
-					.getColumnIndexOrThrow(BlogConfigDBAdapter.KEY_PASSWORD)));
+					.getColumnIndexOrThrow(BlogDBAdapter.KEY_PASSWORD)));
 		} catch (Exception e) {
 			oldLogin = "";
 		}
