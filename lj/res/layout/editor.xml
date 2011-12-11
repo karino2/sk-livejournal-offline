@@ -5,6 +5,7 @@
 	android:background="#99CCFF">
 	<TextView android:layout_width="wrap_content"
 		android:layout_height="wrap_content" android:id="@+id/edit_tv_subject"
+		android:text="@string/subject"
 		android:textColor="#000000"></TextView>
 	<EditText android:layout_width="fill_parent" android:id="@+id/edit_et_subject"
 		android:layout_height="48dp"></EditText>
@@ -18,9 +19,11 @@
 		android:layout_height="wrap_content" android:layout_width="fill_parent"
 		android:gravity="center">
 		<Button android:layout_height="wrap_content" android:id="@+id/edit_bt_clear"
-			android:textSize="20sp" android:layout_width="160dp"></Button>
+		    android:text="@string/clear"
+			android:textSize="20sp" android:layout_width="wrap_content"></Button>
 		<Button android:layout_height="wrap_content" android:id="@+id/edit_bt_post"
-			android:textSize="20sp" android:layout_width="160dp"></Button>
+		    android:text="@string/post"
+			android:textSize="20sp" android:layout_width="wrap_content"></Button>
 	</LinearLayout>
 	
 </LinearLayout>

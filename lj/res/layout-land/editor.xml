@@ -6,12 +6,14 @@
 	<LinearLayout android:id="@+id/LinearLayout02"
 		android:layout_width="wrap_content" android:layout_height="wrap_content">
 		<Button android:id="@+id/edit_bt_clear" android:layout_height="fill_parent"
-			android:layout_width="100dp" android:textSize="20sp"></Button>
+		    		    android:text="@string/clear"
+			android:layout_width="wrap_content" android:textSize="20sp"></Button>
 		<LinearLayout android:id="@+id/LinearLayout03"
 			android:layout_width="wrap_content" android:layout_height="wrap_content"
 			android:orientation="vertical">
 			<TextView android:layout_width="wrap_content"
 				android:layout_height="wrap_content" android:id="@+id/edit_tv_subject"
+				android:text="@string/subject"
 				android:textColor="#000000" android:textSize="13dp"></TextView>
 			<EditText android:id="@+id/edit_et_subject"
 				android:layout_width="280dp" android:textSize="20dp"
@@ -20,7 +22,8 @@
 				android:layout_height="wrap_content" android:id="@+id/edit_tv_post"
 				android:textColor="#000000"></TextView>
 		</LinearLayout>
-		<Button android:id="@+id/edit_bt_post" android:layout_width="100dp"
+		<Button android:id="@+id/edit_bt_post" android:layout_width="wrap_content"
+		    android:text="@string/post"
 			android:gravity="center" android:textSize="20sp"
 			android:layout_height="fill_parent"></Button>
 	</LinearLayout>

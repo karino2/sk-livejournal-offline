@@ -75,13 +75,8 @@ public class BlogPostEditor extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.editor);
 		helper = new SpannableBufferHelper();
-		TextView tv;
-		tv = (TextView) findViewById(R.id.edit_tv_post);
-		tv.setText(R.string.post);
-		tv = (TextView) findViewById(R.id.edit_tv_subject);
-		tv.setText(R.string.subject);
+		
 		button = (Button) findViewById(sk.pack.R.id.edit_bt_post);
-		button.setText(sk.pack.R.string.post);
 		bBody = (EditText) findViewById(sk.pack.R.id.edit_et_post);
 		bSubject = (EditText) findViewById(sk.pack.R.id.edit_et_subject);
 		b = new BlogEntryBean();
@@ -106,7 +101,6 @@ public class BlogPostEditor extends Activity {
 			}
 		});
 		button = (Button) findViewById(sk.pack.R.id.edit_bt_clear);
-		button.setText(sk.pack.R.string.clear);
 		button.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				/**/
