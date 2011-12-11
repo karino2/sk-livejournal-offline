@@ -1,5 +1,7 @@
 package sk.pack.db;
 
+import java.util.Date;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -19,7 +21,8 @@ public class BlogDBAdapter {
 			+ "login text not null, password text not null);";
 	private static final String DATABASE_NAME = "data";
 	private static final String DATABASE_TABLE = "blogconfig";
-	private static final int DATABASE_VERSION = 1;
+	private static final String DRAFTS_TABLE = "drafts";
+	private static final int DATABASE_VERSION = 2;
 	private final Context mCtx;
 
 	private static class DatabaseHelper extends SQLiteOpenHelper {
@@ -32,12 +35,18 @@ public class BlogDBAdapter {
 		public void onCreate(SQLiteDatabase db) {
 
 			db.execSQL(DATABASE_CREATE);
-
+			db.execSQL("create table drafts "
+			+"(_id integer primary key autoincrement"
+			+ ", subject text"
+			+ ", body text"
+			+ ", date integer"
+			+");");
 		}
 
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 			db.execSQL("DROP TABLE IF EXISTS blogconfig");
+			db.execSQL("DROP TABLE IF EXISTS " + DRAFTS_TABLE);
 			onCreate(db);
 		}
 	}
@@ -108,6 +117,41 @@ public class BlogDBAdapter {
 		args.put(KEY_PASSWORD, password);
 
 		return mDb.update(DATABASE_TABLE, args, KEY_ROWID + "=" + rowId, null) > 0;
+	}
+
+	public Cursor fetchDrafts() {
+		return mDb.query(DRAFTS_TABLE, new String[]{"_id", "date", "subject" },
+				null, null, null, null, "date desc");
+	}
+	
+	public BlogEntryBean fetchDraft(long id)
+	{
+		Cursor cursor = mDb.query(DRAFTS_TABLE, new String[]{"_id", "date", "subject", "body" },
+				"_id = ?", new String[]{ String.valueOf(id) }, null, null, null);
+		cursor.moveToFirst();
+		BlogEntryBean ent = new BlogEntryBean();
+		ent.setDraft(true);
+		ent.setCreated(new Date(cursor.getLong(1)));
+		ent.setTitle(cursor.getString(2));
+		ent.setBlogEntry(cursor.getString(3));
+		ent.setId(id);
+		cursor.close();
+		return ent;
+	}
+
+	public void saveDraft(BlogEntryBean b) {
+		ContentValues values = new ContentValues();
+		values.put("subject", b.getTitle());
+		values.put("body", b.getBlogEntry().toString());
+		if(b.getId() == -1)
+		{
+			values.put("date", (new Date()).getTime());
+			mDb.insert(DRAFTS_TABLE, null, values);
+		}
+		else
+		{
+			mDb.update(DRAFTS_TABLE, values, "_id=?", new String[]{ String.valueOf(b.getId()) });
+		}
 	}
 
 }

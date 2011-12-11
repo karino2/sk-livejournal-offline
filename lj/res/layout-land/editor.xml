@@ -26,6 +26,10 @@
 		    android:text="@string/post"
 			android:gravity="center" android:textSize="20sp"
 			android:layout_height="fill_parent"></Button>
+		<Button android:id="@+id/edit_bt_save" android:layout_width="wrap_content"
+		    android:text="@string/save"
+			android:gravity="center" android:textSize="20sp"
+			android:layout_height="fill_parent"></Button>
 	</LinearLayout>
 	<EditText android:id="@+id/edit_et_post" android:layout_width="fill_parent"
 		android:layout_height="188dp" android:gravity="top"></EditText>

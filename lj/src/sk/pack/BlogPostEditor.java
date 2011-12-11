@@ -1,19 +1,15 @@
 package sk.pack;
 
-import java.sql.Date;
-
-import sk.pack.util.AlertUtil;
 import sk.pack.db.BlogDBAdapter;
-import sk.pack.db.SpannableBufferHelper;
-import sk.pack.BlogConfigConstants;
-import sk.pack.BlogInterface;
-import sk.pack.BlogInterfaceFactory;
 import sk.pack.db.BlogEntryBean;
+import sk.pack.db.SpannableBufferHelper;
+import sk.pack.util.AlertUtil;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -21,19 +17,14 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.Selection;
 import android.text.Spannable;
-import android.text.SpannableString;
 import android.text.style.StyleSpan;
-import android.text.style.URLSpan;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.SubMenu;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.Toast;
 
 //changes in readDB
 
@@ -48,6 +39,7 @@ public class BlogPostEditor extends Activity {
 	private SpannableBufferHelper helper = null;
 	private static final int GROUP_BASIC = 0;
 	private static final int GROUP_EMBED = 2;
+	private static final int REQUEST_PICK_DRAFTS = 1;
 	int publishStatus = 0;
 	private BlogDBAdapter mDbHelper;
 	String login = " ", password = " ";
@@ -58,8 +50,7 @@ public class BlogPostEditor extends Activity {
 				R.string.alert_dialog_two_buttons_title).setPositiveButton(
 				R.string.ok, new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int whichButton) {
-						bSubject.setText("");
-						bBody.setText("");
+						clearEntry();
 						/* User clicked OK so do some stuff */
 					}
 				}).setNegativeButton(R.string.cancel,
@@ -107,6 +98,20 @@ public class BlogPostEditor extends Activity {
 				showDialog(0);
 			}
 		});
+		((Button)findViewById(sk.pack.R.id.edit_bt_save)).setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				b.setBlogEntry(helper.SpannableToXHTML(bBody.getText()));
+				b.setTitle(bSubject.getText().toString());
+				mDbHelper.saveDraft(b);
+				showMessage("draft saved");
+				clearEntry();
+			}});
+	}
+	
+	void showMessage(String message) {
+		Toast toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT);
+		toast.show();
 	}
 
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -115,6 +120,7 @@ public class BlogPostEditor extends Activity {
 		menu.add(1, 3, Menu.NONE, "bold");
 		menu.add(GROUP_BASIC, 4, Menu.NONE, "italic");
 		menu.add(GROUP_BASIC, 5, Menu.NONE, "normal");
+		menu.add(Menu.NONE, R.id.item_drafts,Menu.NONE, R.string.drafts);
 		/*
 		 * SubMenu embed = menu.addSubMenu(GROUP_EMBED, 6, Menu.NONE, "embed");
 		 * embed.add(GROUP_EMBED, 7, Menu.NONE, "link"); embed.add(GROUP_EMBED,
@@ -126,6 +132,12 @@ public class BlogPostEditor extends Activity {
 
 	public boolean onOptionsItemSelected(MenuItem item) {
 		int id = item.getItemId();
+		if(id == R.id.item_drafts)
+		{
+	    	Intent intent = new Intent(this, ListDraftActivity.class);
+	    	startActivityForResult(intent, REQUEST_PICK_DRAFTS);			
+			return true;
+		}
 		int group = item.getGroupId();
 		helper.debugWriteBuffer("Buffer before changes:", bBody.getText());
 		Spannable text = bBody.getText();
@@ -246,6 +258,29 @@ public class BlogPostEditor extends Activity {
 		helper.debugWriteBuffer("Buffer after changes:", bBody.getText());
 		// Log.d(TAG, "As XHTML:" + helper.SpannableToXHTML(bBody.getText()));
 		return super.onOptionsItemSelected(item);
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		switch(requestCode)
+		{
+		case REQUEST_PICK_DRAFTS:
+			if(resultCode == Activity.RESULT_OK)
+			{
+				long id = data.getLongExtra("DraftID", -1);
+				if(id != -1)
+					loadDraft(id);
+			}
+			break;
+		}
+	}
+
+	private void loadDraft(long id) {
+		b = mDbHelper.fetchDraft(id);
+		bSubject.setText(b.getTitle());
+		Spannable text = helper.XHTMLToSpannable(b.getBlogEntry());
+		bBody.setText(text);
 	}
 
 	final Runnable mPublishResults = new Runnable() {
@@ -426,6 +461,14 @@ public class BlogPostEditor extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		readDB();
+		// if not, onResume is called after returning from ListDraftsActivity, etc.
+		if(b.getId() == -1)
+			readDB();
+	}
+
+	void clearEntry() {
+		bSubject.setText("");
+		bBody.setText("");
+		b = new BlogEntryBean();
 	}
 }

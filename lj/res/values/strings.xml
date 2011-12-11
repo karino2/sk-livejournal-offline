@@ -44,4 +44,5 @@
 	<string name="alert_dialog_two_buttons_title">Really clear post data?</string>
 	<string name="ok">OK</string>
 	<string name="cancel">Cancel</string>
+	<string name="drafts">Drafts</string>
 </resources>

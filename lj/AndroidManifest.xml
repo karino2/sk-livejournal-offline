@@ -10,6 +10,7 @@
 		</activity>
 		<activity android:name="ProfileManager"></activity>
 		<activity android:name="BlogPostEditor"></activity>
+		<activity android:name=".ListDraftActivity" android:label="Drafts"></activity>
 		<activity android:name="com.sadko.about.AboutActivity"
 			android:label="@string/about_caption">
 		</activity>

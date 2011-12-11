@@ -1,6 +1,5 @@
 package sk.pack.db;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -16,13 +15,13 @@ public class BlogEntryBean {
 	private CharSequence blogEntry;
 	private String title;
 	private Date created;
-	private int id;
+	private long id = -1;
 	private int publishedIn;
 	private boolean isDraft;
 
 	public CharSequence getBlogEntry() {
 		return blogEntry;
-	}
+	}	
 
 	public void setBlogEntry(CharSequence blogEntry) {
 		this.blogEntry = blogEntry;
@@ -69,11 +68,11 @@ public class BlogEntryBean {
 	 * new SimpleDateFormat(DBConstants.DB_DATE_FORMAT); return
 	 * ""+getTitle()+" - "+df.format(created); }
 	 */
-	public int getId() {
+	public long getId() {
 		return this.id;
 	}
 
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
