@@ -1,13 +1,10 @@
 package sk.pack;
 
 import sk.pack.db.BlogDBAdapter;
-import sk.pack.util.AlertUtil;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
-
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,11 +12,17 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 
 public class LJ extends Activity {
-	private static final String TAG = "MainActivity";
 	private Button postButton, editButton, draftsButton;
 	private BlogDBAdapter mDbHelper;
 	private String login = " ", password = " ";
 	private boolean isBlogConfigOk = false;
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		loadAccountInfo();
+		postButton.setEnabled(isBlogConfigOk);
+	}
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -30,7 +33,7 @@ public class LJ extends Activity {
 		} catch (Exception e) {
 		}
 		postButton = (Button) findViewById(R.id.main_bt_post);
-		readDB();
+		loadAccountInfo();
 		postButton.setEnabled(isBlogConfigOk);
 		postButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
@@ -60,7 +63,7 @@ public class LJ extends Activity {
 
 	public boolean onCreateOptionsMenu(Menu menu) {
 		boolean result = super.onCreateOptionsMenu(menu);
-		menu.add(0, menu.FIRST, Menu.NONE, sk.pack.R.string.about);
+		menu.add(0, Menu.FIRST, Menu.NONE, sk.pack.R.string.about);
 		return result;
 	}
 
@@ -74,15 +77,12 @@ public class LJ extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	private void readDB() {
+	private void loadAccountInfo() {
 		try {
 			isBlogConfigOk = false;
-			Cursor bc = mDbHelper.fetchConfig(ProfileManager.CONFIG_ROW);
-			startManagingCursor(bc);
-			login = bc.getString(bc
-					.getColumnIndexOrThrow(BlogDBAdapter.KEY_LOGIN));
-			password = bc.getString(bc
-					.getColumnIndexOrThrow(BlogDBAdapter.KEY_PASSWORD));
+			BlogDBAdapter.Account account = mDbHelper.fetchAccount();
+			login = account.login;
+			password = account.password;
 			int i = login.length();
 			int j = password.length();
 			if (!((i < 1) || (j < 1))) {

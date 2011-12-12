@@ -19,6 +19,7 @@ import android.text.Selection;
 import android.text.Spannable;
 import android.text.style.StyleSpan;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -26,17 +27,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-//changes in readDB
-
 public class BlogPostEditor extends Activity {
 	EditText bSubject, bBody;
-	private static Button button;
 	private static BlogEntryBean b = null;
 	private ProgressDialog publishProgress = null;
 	private final String MSG_KEY = "value";
 	private SpannableBufferHelper helper = null;
-	private static final int GROUP_BASIC = 0;
-	private static final int GROUP_EMBED = 2;
 	int publishStatus = 0;
 	private BlogDBAdapter mDbHelper;
 	String login = " ", password = " ";
@@ -47,7 +43,6 @@ public class BlogPostEditor extends Activity {
 		setContentView(R.layout.editor);
 		helper = new SpannableBufferHelper();
 		
-		button = (Button) findViewById(sk.pack.R.id.edit_bt_post);
 		bBody = (EditText) findViewById(sk.pack.R.id.edit_et_post);
 		bSubject = (EditText) findViewById(sk.pack.R.id.edit_et_subject);
 		b = new BlogEntryBean();
@@ -61,75 +56,42 @@ public class BlogPostEditor extends Activity {
 		if(draftId != -1)
 			loadDraft(draftId);
 		
-		button.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				b.setTitle(bSubject.getText().toString());
-				CharSequence cs = (CharSequence) bBody.getText().toString();
-				b.setBlogEntry(cs);
-				if (!cs.equals("")) {
-					post();
-				} else {
-					AlertUtil.showAlert(BlogPostEditor.this,
-							getString(R.string.unable_to_publish),
-							getString(R.string.fill_the_post_field));
-				}
-			}
-		});
-		button = (Button) findViewById(sk.pack.R.id.edit_bt_clear);
-		button.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				clearEntry();
-			}
-		});
-		((Button)findViewById(sk.pack.R.id.edit_bt_save)).setOnClickListener(new OnClickListener(){
+		((Button)findViewById(R.id.edit_bt_bold)).setOnClickListener(new OnClickListener(){
+
 			@Override
 			public void onClick(View v) {
-				b.setBlogEntry(helper.SpannableToXHTML(bBody.getText()));
-				b.setTitle(bSubject.getText().toString());
-				mDbHelper.saveDraft(b);
-				finish();
+				onFormatClicked(R.id.edit_bt_bold);				
+				
+			}});
+		
+		((Button)findViewById(R.id.edit_bt_italic)).setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				onFormatClicked(R.id.edit_bt_italic);				
+			}});
+		((Button)findViewById(R.id.edit_bt_normal)).setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				onFormatClicked(R.id.edit_bt_normal);				
 			}});
 	}
-	
-	void showMessage(String message) {
-		Toast toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT);
-		toast.show();
-	}
-
-	public boolean onCreateOptionsMenu(Menu menu) {
-		boolean result = super.onCreateOptionsMenu(menu);
-		// Create first level
-		menu.add(1, 3, Menu.NONE, "bold");
-		menu.add(GROUP_BASIC, 4, Menu.NONE, "italic");
-		menu.add(GROUP_BASIC, 5, Menu.NONE, "normal");
-		menu.add(Menu.NONE, R.id.item_drafts,Menu.NONE, R.string.drafts);
-		/*
-		 * SubMenu embed = menu.addSubMenu(GROUP_EMBED, 6, Menu.NONE, "embed");
-		 * embed.add(GROUP_EMBED, 7, Menu.NONE, "link"); embed.add(GROUP_EMBED,
-		 * 8, Menu.NONE, "html");
-		 */
-		// Create submenu based on the available blogs configured
-		return result;
-	}
-
-	public boolean onOptionsItemSelected(MenuItem item) {
-		int id = item.getItemId();
-		if(id == R.id.item_drafts)
-		{
-	    	Intent intent = new Intent(this, ListDraftActivity.class);
-	    	startActivity(intent);
-	    	/*
-	    	intent.setAction(Intent.ACTION_PICK);
-	    	startActivityForResult(intent, REQUEST_PICK_DRAFTS);			
-	    	*/
-	    	// finish();
-			return true;
+	void onFormatClicked(int id)
+	{
+		if(!bBody.hasFocus()) {
+			AlertUtil.showAlert(this, "Not available",
+							"Only the blog text can have styling information, sorry.");
+			return;
 		}
-		int group = item.getGroupId();
+		
 		helper.debugWriteBuffer("Buffer before changes:", bBody.getText());
 		Spannable text = bBody.getText();
 		int selectionStart = Selection.getSelectionStart(text);
 		int selectionEnd = Selection.getSelectionEnd(text);
+		
+		
+		
 		// if user has selected from end to beginning, flip
 		// values, we are interested about the selection, not
 		// direction
@@ -138,113 +100,81 @@ public class BlogPostEditor extends Activity {
 			selectionEnd = selectionStart;
 			selectionStart = temp;
 		}
-		if (group == GROUP_BASIC) {
-			if ((id != Menu.FIRST) && !bBody.hasFocus()) {
-				AlertUtil
-						.showAlert(this, "Not available",
-								"Only the blog text can have styling information, sorry.");
-				return super.onOptionsItemSelected(item);
-			}
-			if (selectionStart == selectionEnd) {
-				switch (id) {
-				case 3:
-					// Log.d(TAG, "case3eq");
-					text.setSpan(new StyleSpan(Typeface.BOLD), selectionStart,
-							selectionEnd, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-					bBody.setText(helper.XHTMLToSpannable(helper
-							.SpannableToXHTML(text)));
-					bBody.setSelection(selectionEnd);
-					break;
-				case 4:
-					// Log.d(TAG, "case4eq");
-					text.setSpan(new StyleSpan(Typeface.ITALIC),
-							selectionStart, selectionEnd,
-							Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-					bBody.setText(helper.XHTMLToSpannable(helper
-							.SpannableToXHTML(text)));
-					bBody.setSelection(selectionEnd);
-					break;
-				case 5:
-					// Log.d(TAG, "case5eq");
-					text.setSpan(new StyleSpan(Typeface.NORMAL),
-							selectionStart, selectionEnd,
-							Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-					bBody.setText(helper.XHTMLToSpannable(helper
-							.SpannableToXHTML(text)));
-					bBody.setSelection(selectionEnd);
-
-				}
-			} else {
-				switch (id) {
-				case 3:
-					// Log.d(TAG, "case3!");
-					text.setSpan(new StyleSpan(Typeface.BOLD), selectionStart,
-							selectionEnd, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-					bBody.setText(helper.XHTMLToSpannable(helper
-							.SpannableToXHTML(text)));
-					bBody.setSelection(selectionEnd);
-					break;
-				case 4:
-					// Log.d(TAG, "case3!");
-					text.setSpan(new StyleSpan(Typeface.ITALIC),
-							selectionStart, selectionEnd,
-							Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-					bBody.setText(helper.XHTMLToSpannable(helper
-							.SpannableToXHTML(text)));
-					bBody.setSelection(selectionEnd);
-					break;
-				case 5:
-					// Log.d(TAG, "case3!");
-					text.setSpan(new StyleSpan(Typeface.NORMAL),
-							selectionStart, selectionEnd,
-							Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-					// helper.removeSpans()
-					bBody.setText(helper.XHTMLToSpannable(helper
-							.SpannableToXHTML(text)));
-					bBody.setSelection(selectionEnd);
-					break;
-				}
-			}
-		} else if (group == GROUP_EMBED) {
-			if ((id > 6 && id < 12) && !bBody.hasFocus()) {
-				AlertUtil.showAlert(this, "Not available",
-						"Only the blog text can have embedded objects, sorry.");
-				return super.onOptionsItemSelected(item);
-			}
-			if (id == 7) { // LINK
-				/*
-				 * currentUrlSpan = new URLSpan(""); currentSpanStart =
-				 * selectionStart; currentSpanEnd = selectionEnd;
-				 * getTextInputFromDialog();
-				 */
-			} else if (id == 8) { // HTML
-				if (selectionStart == selectionEnd) {
-					/*
-					 * currentSpanStart = selectionStart; currentSpanEnd =
-					 * selectionStart; getHtmlInputFromDialog();
-					 */
-				} else {
-					AlertUtil
-							.showAlert(this, "Invalid selection",
-									"When embedding HTML markup, don't select a range.");
-					return super.onOptionsItemSelected(item);
-				}
-			} else if (id == 10) { // Image
-				/*
-				 * if (selectionStart == selectionEnd) { currentSpanStart =
-				 * selectionStart; currentSpanEnd = selectionStart;
-				 * getImageSelectionFromActivity(); } else {
-				 * AlertUtil.showAlert(this, "Invalid selection",
-				 * "When embedding an image, don't select a range."); return
-				 * super.onOptionsItemSelected(item); }
-				 */
-			}
-
+		
+		int typeface = Typeface.NORMAL;
+		switch(id)
+		{
+		case R.id.edit_bt_bold:
+			typeface = Typeface.BOLD;
+			break;
+		case R.id.edit_bt_italic:
+			typeface = Typeface.ITALIC;
+			break;
+		case R.id.edit_bt_normal:
+			typeface = Typeface.NORMAL;
+			break;
 		}
 
-		helper.debugWriteBuffer("Buffer after changes:", bBody.getText());
-		// Log.d(TAG, "As XHTML:" + helper.SpannableToXHTML(bBody.getText()));
-		return super.onOptionsItemSelected(item);
+		
+		if (selectionStart == selectionEnd) {
+			text.setSpan(new StyleSpan(typeface), selectionStart,
+					selectionEnd, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+			bBody.setText(helper.XHTMLToSpannable(helper
+					.SpannableToXHTML(text)));
+			bBody.setSelection(selectionEnd);
+
+		}else {
+			text.setSpan(new StyleSpan(typeface), selectionStart,
+					selectionEnd, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+			bBody.setText(helper.XHTMLToSpannable(helper
+					.SpannableToXHTML(text)));
+			bBody.setSelection(selectionEnd);
+			
+		}
+	}
+	
+	void showMessage(String message) {
+		Toast toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT);
+		toast.show();
+	}
+
+	public boolean onCreateOptionsMenu(Menu menu) {
+    	MenuInflater inflater = getMenuInflater();
+    	inflater.inflate(R.menu.blog_post, menu);    	
+    	return true;
+	}
+
+	public boolean onOptionsItemSelected(MenuItem item) {
+		int id = item.getItemId();
+		switch(id)
+		{
+		case R.id.item_drafts:
+	    	Intent intent = new Intent(this, ListDraftActivity.class);
+	    	startActivity(intent);
+	    	return true;
+		case R.id.item_new:
+			clearEntry();
+			return true;
+		case R.id.item_post:
+			b.setTitle(bSubject.getText().toString());
+			CharSequence cs = (CharSequence) bBody.getText().toString();
+			b.setBlogEntry(cs);
+			if (!cs.equals("")) {
+				post();
+			} else {
+				AlertUtil.showAlert(BlogPostEditor.this,
+						getString(R.string.unable_to_publish),
+						getString(R.string.fill_the_post_field));
+			}
+			return true;
+		case R.id.item_save:
+			b.setBlogEntry(helper.SpannableToXHTML(bBody.getText()));
+			b.setTitle(bSubject.getText().toString());
+			mDbHelper.saveDraft(b);
+			finish();
+			return true;
+		}
+		return false;
 	}
 	
 	private void loadDraft(long id) {

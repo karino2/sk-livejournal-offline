@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
-    <item android:id="@+id/item_drafts" android:title="@string/drafts"></item>
+    <item android:id="@+id/item_new" android:title="@string/new_label"></item><item android:id="@+id/item_drafts" android:title="@string/drafts"></item>
+    
+    <item android:id="@+id/item_post" android:title="@string/post"></item>
+    <item android:id="@+id/item_save" android:title="@string/save"></item>
 
     
 

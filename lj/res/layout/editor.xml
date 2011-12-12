@@ -3,30 +3,41 @@
 	android:orientation="vertical" android:layout_width="fill_parent"
 	android:layout_height="fill_parent" android:gravity="center"
 	android:background="#99CCFF">
-	<TextView android:layout_width="wrap_content"
-		android:layout_height="wrap_content" android:id="@+id/edit_tv_subject"
-		android:text="@string/subject"
-		android:textColor="#000000"></TextView>
-	<EditText android:layout_width="fill_parent" android:id="@+id/edit_et_subject"
-		android:layout_height="48dp"></EditText>
-	<TextView android:layout_width="wrap_content"
-		android:layout_height="wrap_content" android:id="@+id/edit_tv_post"
-		android:textColor="#000000"></TextView>
-	<EditText android:layout_width="fill_parent"
-		android:layout_height="300dp" android:id="@+id/edit_et_post"
-		android:gravity="top"></EditText>
-	<LinearLayout android:id="@+id/LinearLayout01"
-		android:layout_height="wrap_content" android:layout_width="fill_parent"
-		android:gravity="center">
-		<Button android:layout_height="wrap_content" android:id="@+id/edit_bt_clear"
-		    android:text="@string/new_label"
+	<LinearLayout
+	    android:orientation="horizontal"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    >
+		<Button android:layout_height="wrap_content" android:id="@+id/edit_bt_italic"
+		    android:text="italic"
 			android:textSize="20sp" android:layout_width="wrap_content"></Button>
-		<Button android:layout_height="wrap_content" android:id="@+id/edit_bt_post"
-		    android:text="@string/post"
+		<Button android:layout_height="wrap_content" android:id="@+id/edit_bt_bold"
+		    android:text="bold"
 			android:textSize="20sp" android:layout_width="wrap_content"></Button>
-		<Button android:layout_height="wrap_content" android:id="@+id/edit_bt_save"
-		    android:text="@string/save"
-			android:textSize="20sp" android:layout_width="wrap_content"></Button>
+		<Button android:layout_height="wrap_content" android:id="@+id/edit_bt_normal"
+		    android:text="normal"
+		    android:checked="true"
+			android:textSize="20sp" android:layout_width="wrap_content"></Button>	    	    	    
 	</LinearLayout>
-	
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        >
+		<LinearLayout
+		    android:orientation="vertical"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content" >
+
+			<EditText android:layout_width="fill_parent" android:id="@+id/edit_et_subject"
+				android:layout_height="48dp"></EditText>
+			
+			<EditText android:layout_width="fill_parent"
+			    android:minHeight="400dp"
+				android:layout_height="wrap_content"
+				 android:id="@+id/edit_et_post"
+				 android:gravity="top"
+				></EditText>
+		</LinearLayout>
+	</ScrollView>	
+	    	
 </LinearLayout>

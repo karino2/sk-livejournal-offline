@@ -8,7 +8,7 @@
 		android:background="@drawable/lj_logo_land">
 	</LinearLayout>
 	<LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content">
-			<Button android:id="@+id/main_bt_post" android:layout_height="wrap_content"
+		<Button android:id="@+id/main_bt_post" android:layout_height="wrap_content"
 		    android:text="@string/createpost"
 			android:textSize="20sp" android:layout_width="0dp" android:layout_weight="1"></Button>
 		<Button android:layout_height="wrap_content" android:id="@+id/main_bt_ep"
