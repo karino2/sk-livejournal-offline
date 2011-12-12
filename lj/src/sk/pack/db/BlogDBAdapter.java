@@ -2,6 +2,8 @@ package sk.pack.db;
 
 import java.util.Date;
 
+import sk.pack.ProfileManager;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -110,6 +112,23 @@ public class BlogDBAdapter {
 		return mCursor;
 
 	}
+	
+	public class Account
+	{
+		public String login;
+		public String password;
+	}
+	
+	public Account fetchAccount()
+	{
+		Account ret = new Account();
+		Cursor cursor = fetchConfig(ProfileManager.CONFIG_ROW);
+		int iq = cursor.getColumnIndexOrThrow(BlogDBAdapter.KEY_LOGIN);
+		ret.login = cursor.getString(iq);
+		ret.password = cursor.getString(cursor
+				.getColumnIndexOrThrow(BlogDBAdapter.KEY_PASSWORD));
+		return ret;
+	}
 
 	public boolean updateConfig(long rowId, String login, String password) {
 		ContentValues args = new ContentValues();
@@ -119,8 +138,13 @@ public class BlogDBAdapter {
 		return mDb.update(DATABASE_TABLE, args, KEY_ROWID + "=" + rowId, null) > 0;
 	}
 
-	public Cursor fetchDrafts() {
+	public Cursor fetchDraftSubjects() {
 		return mDb.query(DRAFTS_TABLE, new String[]{"_id", "date", "subject" },
+				null, null, null, null, "date desc");
+	}
+	
+	public Cursor fetchDrafts() {
+		return mDb.query(DRAFTS_TABLE, new String[]{"_id", "date", "subject", "body" },
 				null, null, null, null, "date desc");
 	}
 	
@@ -129,13 +153,18 @@ public class BlogDBAdapter {
 		Cursor cursor = mDb.query(DRAFTS_TABLE, new String[]{"_id", "date", "subject", "body" },
 				"_id = ?", new String[]{ String.valueOf(id) }, null, null, null);
 		cursor.moveToFirst();
+		BlogEntryBean ent = draftFromCurrent(cursor);
+		cursor.close();
+		return ent;
+	}
+
+	public BlogEntryBean draftFromCurrent(Cursor cursor) {
 		BlogEntryBean ent = new BlogEntryBean();
 		ent.setDraft(true);
 		ent.setCreated(new Date(cursor.getLong(1)));
 		ent.setTitle(cursor.getString(2));
 		ent.setBlogEntry(cursor.getString(3));
-		ent.setId(id);
-		cursor.close();
+		ent.setId(cursor.getLong(0));
 		return ent;
 	}
 
@@ -152,6 +181,10 @@ public class BlogDBAdapter {
 		{
 			mDb.update(DRAFTS_TABLE, values, "_id=?", new String[]{ String.valueOf(b.getId()) });
 		}
+	}
+
+	public void deleteDraft(long id) {
+		mDb.delete(DRAFTS_TABLE, "_id=?", new String[]{ String.valueOf(id) });
 	}
 
 }

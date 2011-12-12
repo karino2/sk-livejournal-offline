@@ -16,7 +16,7 @@ import android.widget.Button;
 
 public class LJ extends Activity {
 	private static final String TAG = "MainActivity";
-	private Button postButton, editButton, exitButton;
+	private Button postButton, editButton, draftsButton;
 	private BlogDBAdapter mDbHelper;
 	private String login = " ", password = " ";
 	private boolean isBlogConfigOk = false;
@@ -30,19 +30,13 @@ public class LJ extends Activity {
 		} catch (Exception e) {
 		}
 		postButton = (Button) findViewById(R.id.main_bt_post);
-		postButton.setText(R.string.createpost);
+		readDB();
+		postButton.setEnabled(isBlogConfigOk);
 		postButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				readDB();
-				if (isBlogConfigOk) {
-					Intent intent = new Intent(LJ.this, BlogPostEditor.class);
-					intent.setAction(Intent.ACTION_INSERT);
-					LJ.this.startActivity(intent);
-				} else {
-					AlertUtil.showAlert(LJ.this,
-							getString(R.string.blog_not_configured),
-							getString(R.string.conf_first));
-				}
+				Intent intent = new Intent(LJ.this, BlogPostEditor.class);
+				intent.setAction(Intent.ACTION_INSERT);
+				LJ.this.startActivity(intent);
 			}
 		});
 
@@ -55,11 +49,11 @@ public class LJ extends Activity {
 
 			}
 		});
-		exitButton = (Button) findViewById(R.id.main_bt_exit);
-		exitButton.setText(R.string.exit);
-		exitButton.setOnClickListener(new OnClickListener() {
+		draftsButton = (Button) findViewById(R.id.main_bt_drafts);
+		draftsButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				finish();
+				Intent i = new Intent(LJ.this, ListDraftActivity.class);
+				LJ.this.startActivity(i);
 			}
 		});
 	}

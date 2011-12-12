@@ -9,14 +9,17 @@
 	<LinearLayout android:id="@+id/LinearLayout03"
 		android:layout_width="wrap_content" android:layout_height="20sp"></LinearLayout>
 	<Button android:id="@+id/main_bt_post" android:layout_height="wrap_content"
+	    android:text="@string/createpost"
 		android:textSize="20sp" android:layout_width="250sp"></Button>
 	<LinearLayout android:id="@+id/LinearLayout02"
 		android:layout_width="wrap_content" android:layout_height="20sp"></LinearLayout>
 	<Button android:layout_height="wrap_content" android:textSize="20sp"
+	    android:text="@string/profile_manager"
 		android:id="@+id/main_bt_ep" android:layout_width="250sp"></Button>
 	<LinearLayout android:id="@+id/LinearLayout03"
 		android:layout_width="wrap_content" android:layout_height="20sp">
 	</LinearLayout>
-	<Button android:layout_height="wrap_content" android:id="@+id/main_bt_exit"
+	<Button android:layout_height="wrap_content" android:id="@+id/main_bt_drafts"
+	    android:text="@string/drafts"	    
 		android:textSize="20sp" android:layout_width="250sp"></Button>
 </LinearLayout>

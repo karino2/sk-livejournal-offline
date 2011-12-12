@@ -3,6 +3,7 @@ package sk.pack;
 import sk.pack.db.BlogDBAdapter;
 import sk.pack.db.BlogEntryBean;
 import sk.pack.db.SpannableBufferHelper;
+import sk.pack.db.BlogDBAdapter.Account;
 import sk.pack.util.AlertUtil;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -39,7 +40,6 @@ public class BlogPostEditor extends Activity {
 	private SpannableBufferHelper helper = null;
 	private static final int GROUP_BASIC = 0;
 	private static final int GROUP_EMBED = 2;
-	private static final int REQUEST_PICK_DRAFTS = 1;
 	int publishStatus = 0;
 	private BlogDBAdapter mDbHelper;
 	String login = " ", password = " ";
@@ -62,7 +62,6 @@ public class BlogPostEditor extends Activity {
 	}
 
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.editor);
 		helper = new SpannableBufferHelper();
@@ -76,7 +75,14 @@ public class BlogPostEditor extends Activity {
 			mDbHelper.open();
 		} catch (Exception e) {
 		}
-		readDB();
+		long draftId = getIntent().getLongExtra("DraftID", -1);
+		if(draftId == -1)
+			readDB();
+		else
+		{
+			readAccount();
+			loadDraft(draftId);
+		}
 		button.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				b.setTitle(bSubject.getText().toString());
@@ -104,8 +110,7 @@ public class BlogPostEditor extends Activity {
 				b.setBlogEntry(helper.SpannableToXHTML(bBody.getText()));
 				b.setTitle(bSubject.getText().toString());
 				mDbHelper.saveDraft(b);
-				showMessage("draft saved");
-				clearEntry();
+				finish();
 			}});
 	}
 	
@@ -135,7 +140,12 @@ public class BlogPostEditor extends Activity {
 		if(id == R.id.item_drafts)
 		{
 	    	Intent intent = new Intent(this, ListDraftActivity.class);
+	    	startActivity(intent);
+	    	/*
+	    	intent.setAction(Intent.ACTION_PICK);
 	    	startActivityForResult(intent, REQUEST_PICK_DRAFTS);			
+	    	*/
+	    	// finish();
 			return true;
 		}
 		int group = item.getGroupId();
@@ -260,22 +270,6 @@ public class BlogPostEditor extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 	
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		switch(requestCode)
-		{
-		case REQUEST_PICK_DRAFTS:
-			if(resultCode == Activity.RESULT_OK)
-			{
-				long id = data.getLongExtra("DraftID", -1);
-				if(id != -1)
-					loadDraft(id);
-			}
-			break;
-		}
-	}
-
 	private void loadDraft(long id) {
 		b = mDbHelper.fetchDraft(id);
 		bSubject.setText(b.getTitle());
@@ -294,8 +288,12 @@ public class BlogPostEditor extends Activity {
 		if (publishStatus == 5) {
 			AlertUtil.showAlert(this, getString(R.string.publish_status),
 					getString(R.string.publish_ok));
-			bSubject.setText("");
-			bBody.setText("");
+			if(b.getId() != -1)
+			{
+				// also saved in draft. delete it.
+				mDbHelper.deleteDraft(b.getId());
+			}
+			clearEntry();
 			// activity should finish after ok.
 		} else {
 			String str = "";
@@ -322,12 +320,7 @@ public class BlogPostEditor extends Activity {
 				statusMsg.setData(status);
 				mHandler.sendMessage(statusMsg);
 				boolean publishOk = false;
-				BlogConfigConstants.BlogInterfaceType typeEnum = BlogConfigConstants
-						.getInterfaceTypeByNumber(6);
-				BlogInterface blogapi = null;
-				blogapi = BlogInterfaceFactory.getInstance(typeEnum);
-				CharSequence config = "";
-				blogapi.setInstanceConfig(config);
+				BlogInterface blogapi = BlogInterfaceFactory.getLiveJournalApi();
 
 				status.putString(MSG_KEY, "2");
 				statusMsg = mHandler.obtainMessage();
@@ -421,13 +414,7 @@ public class BlogPostEditor extends Activity {
 	public void readDB() {
 
 		try {
-			Cursor bc = mDbHelper.fetchConfig(ProfileManager.CONFIG_ROW);
-			startManagingCursor(bc);
-			int iq = bc.getColumnIndexOrThrow(BlogDBAdapter.KEY_LOGIN);
-			login = bc.getString(iq);
-			password = bc.getString(bc
-					.getColumnIndexOrThrow(BlogDBAdapter.KEY_PASSWORD));
-
+			readAccount();
 		} catch (Exception e) {
 		}
 		try {
@@ -447,6 +434,12 @@ public class BlogPostEditor extends Activity {
 		}
 	}
 
+	void readAccount() {
+		Account account = mDbHelper.fetchAccount();
+		login = account.login;
+		password = account.password;
+	}
+
 	@Override
 	protected void onPause() {
 		super.onPause();
@@ -461,7 +454,7 @@ public class BlogPostEditor extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		// if not, onResume is called after returning from ListDraftsActivity, etc.
+		// if not, onResume is called after returning from ListDraftActivity, etc.
 		if(b.getId() == -1)
 			readDB();
 	}

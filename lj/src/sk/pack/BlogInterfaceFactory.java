@@ -28,5 +28,17 @@ public class BlogInterfaceFactory {
 			return null;
 		}
 	}
+	
+	// I think this is enough (by karino).
+	public static BlogInterface getLiveJournalApi() {
+		BlogConfigConstants.BlogInterfaceType typeEnum = BlogConfigConstants
+				.getInterfaceTypeByNumber(6);
+		BlogInterface blogapi = null;
+		blogapi = BlogInterfaceFactory.getInstance(typeEnum);
+		CharSequence config = "";
+		blogapi.setInstanceConfig(config);
+		return blogapi;
+	}
+
 
 }
