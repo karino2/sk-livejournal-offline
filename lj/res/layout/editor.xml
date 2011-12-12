@@ -19,7 +19,7 @@
 		android:layout_height="wrap_content" android:layout_width="fill_parent"
 		android:gravity="center">
 		<Button android:layout_height="wrap_content" android:id="@+id/edit_bt_clear"
-		    android:text="@string/clear"
+		    android:text="@string/new_label"
 			android:textSize="20sp" android:layout_width="wrap_content"></Button>
 		<Button android:layout_height="wrap_content" android:id="@+id/edit_bt_post"
 		    android:text="@string/post"

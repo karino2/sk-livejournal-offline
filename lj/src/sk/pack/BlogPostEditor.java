@@ -11,7 +11,6 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
@@ -30,8 +29,6 @@ import android.widget.Toast;
 //changes in readDB
 
 public class BlogPostEditor extends Activity {
-	// private boolean flag=false;
-	private static final String TAG = "BlogPostEditor";
 	EditText bSubject, bBody;
 	private static Button button;
 	private static BlogEntryBean b = null;
@@ -44,22 +41,6 @@ public class BlogPostEditor extends Activity {
 	private BlogDBAdapter mDbHelper;
 	String login = " ", password = " ";
 
-	protected Dialog onCreateDialog(int id) {
-		return new AlertDialog.Builder(BlogPostEditor.this).setIcon(
-				R.drawable.alert_dialog_icon).setTitle(
-				R.string.alert_dialog_two_buttons_title).setPositiveButton(
-				R.string.ok, new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int whichButton) {
-						clearEntry();
-						/* User clicked OK so do some stuff */
-					}
-				}).setNegativeButton(R.string.cancel,
-				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int whichButton) {
-						/* User clicked Cancel so do some stuff */
-					}
-				}).create();
-	}
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -75,14 +56,11 @@ public class BlogPostEditor extends Activity {
 			mDbHelper.open();
 		} catch (Exception e) {
 		}
+		readAccount();
 		long draftId = getIntent().getLongExtra("DraftID", -1);
-		if(draftId == -1)
-			readDB();
-		else
-		{
-			readAccount();
+		if(draftId != -1)
 			loadDraft(draftId);
-		}
+		
 		button.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				b.setTitle(bSubject.getText().toString());
@@ -100,8 +78,7 @@ public class BlogPostEditor extends Activity {
 		button = (Button) findViewById(sk.pack.R.id.edit_bt_clear);
 		button.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				/**/
-				showDialog(0);
+				clearEntry();
 			}
 		});
 		((Button)findViewById(sk.pack.R.id.edit_bt_save)).setOnClickListener(new OnClickListener(){
@@ -411,52 +388,27 @@ public class BlogPostEditor extends Activity {
 		}
 	};
 
-	public void readDB() {
-
-		try {
-			readAccount();
-		} catch (Exception e) {
-		}
-		try {
-			Cursor bc = mDbHelper.fetchConfig(ProfileManager.POST_ROW);
-			startManagingCursor(bc);
-			int i = bc.getColumnIndexOrThrow(BlogDBAdapter.KEY_LOGIN);
-			String str = bc.getString(i);
-			if (!str.equals(" "))
-				bSubject.setText(str);
-			str = bc.getString(bc
-					.getColumnIndexOrThrow(BlogDBAdapter.KEY_PASSWORD));
-			if (!str.equals(" ")) {
-				Spannable text = helper.XHTMLToSpannable(str);
-				bBody.setText(text);
-			}
-		} catch (Exception e) {
-		}
-	}
-
 	void readAccount() {
 		Account account = mDbHelper.fetchAccount();
 		login = account.login;
 		password = account.password;
 	}
-
+	
 	@Override
-	protected void onPause() {
-		super.onPause();
-		if (!mDbHelper.updateConfig(ProfileManager.POST_ROW, bSubject.getText()
-				.toString(), helper.SpannableToXHTML(bBody.getText()))) {
-			mDbHelper.createConfig(bSubject.getText().toString(), bBody
-					.getText().toString());
-		}
-
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putString("BLOG_SUBJECT", bSubject.getText().toString());
+		outState.putString("BLOG_BODY", helper.SpannableToXHTML(bBody.getText()));
 	}
-
+	
 	@Override
-	protected void onResume() {
-		super.onResume();
-		// if not, onResume is called after returning from ListDraftActivity, etc.
-		if(b.getId() == -1)
-			readDB();
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		super.onRestoreInstanceState(savedInstanceState);
+		
+		bSubject.setText(savedInstanceState.getString("BLOG_SUBJECT"));
+		Spannable text = helper.XHTMLToSpannable(savedInstanceState.getString("BLOG_BODY"));
+		bBody.setText(text);
+		
 	}
 
 	void clearEntry() {

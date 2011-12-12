@@ -5,7 +5,7 @@
 	<string name="login">Login</string>
 	<string name="password">Password</string>
 	<string name="save">Save</string>
-	<string name="createpost">Create post</string>
+	<string name="createpost">New draft</string>
 	<string name="post">Post</string>
 	<string name="subject">Subject</string>
 	<string name="blog_not_configured">Blog is not configured</string>
@@ -34,7 +34,7 @@
 	<string name="about3">Ekaterina Polovinkina - tech writer,
 		tester</string>
 	<string name="about">About program</string>
-	<string name="clear">Clear</string>
+	<string name="new_label">New</string>
 	<string name="prepare">Preparing API ...</string>
 	<string name="extracting_response">Extracting response...</string>
 	<string name="status">Status</string>
