@@ -143,7 +143,7 @@ public class BlogDBAdapter {
 	
 	public Cursor fetchDrafts() {
 		return mDb.query(DRAFTS_TABLE, new String[]{"_id", "date", "subject", "body" },
-				null, null, null, null, "date desc");
+				null, null, null, null, "date asc");
 	}
 	
 	public BlogEntryBean fetchDraft(long id)
