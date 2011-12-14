@@ -11,10 +11,13 @@ import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.SimpleCursorAdapter;
 import android.widget.SimpleCursorAdapter.ViewBinder;
@@ -60,8 +63,29 @@ public class ListDraftActivity extends ListActivity {
 				intent.putExtra("DraftID", id);
 				startActivity(intent);
 			}});
-
 		
+		registerForContextMenu(getListView());
+		
+	}
+	
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v,
+			ContextMenuInfo menuInfo) {
+		super.onCreateContextMenu(menu, v, menuInfo);
+		menu.add(Menu.NONE, R.id.item_delete, Menu.NONE, R.string.delete);
+	}
+	
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+		switch(item.getItemId())
+		{
+		case R.id.item_delete:
+	        AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+	        mDbHelper.deleteDraft(info.id);
+	        cursor.requery();
+			return true;
+		}
+		return super.onContextItemSelected(item);
 	}
 	
 	@Override
