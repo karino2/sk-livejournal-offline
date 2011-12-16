@@ -27,6 +27,7 @@ import android.widget.Toast;
 public class ListDraftActivity extends ListActivity {
 	private BlogDBAdapter mDbHelper;
 	private Cursor cursor;
+	static final int POST_ALL_DIALOG_ID = 1;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -106,35 +107,52 @@ public class ListDraftActivity extends ListActivity {
 		switch(item.getItemId())
 		{
 		case R.id.item_post_all:
-			ProgressDialog dialog = new ProgressDialog(this);
-			dialog.setCancelable(true);
-			final BulkDraftPostTask task = new BulkDraftPostTask(this, this, dialog, BlogInterfaceFactory.getLiveJournalApi(),
-					new BulkDraftPostTask.ResultListener() {
-						
-						@Override
-						public void notifySuccess() {
-							cursor.requery();
-							showMessage("post drafts done");
-						}
-						
-						@Override
-						public void notifyError(String message) {
-							cursor.requery();
-							showMessage(message);
-						}
-					});
-			dialog.setOnCancelListener(new OnCancelListener() {
-				
-				@Override
-				public void onCancel(DialogInterface dialog) {
-					task.cancel(false);
-					showMessage("post cancelled");
-					cursor.requery();
-				}
-			});
-			task.execute("");
+			showDialog(POST_ALL_DIALOG_ID);
+			postAll();
 			break;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	
+	protected android.app.Dialog onCreateDialog(int id)
+	{
+		switch(id)
+		{
+		case POST_ALL_DIALOG_ID:
+			return postAll();
+		}
+		return null;
+	}
+
+	ProgressDialog postAll() {
+		ProgressDialog dialog = new ProgressDialog(this);
+		dialog.setTitle("Posting...");
+		dialog.setCancelable(true);
+		final BulkDraftPostTask task = new BulkDraftPostTask(this, this, dialog, BlogInterfaceFactory.getLiveJournalApi(),
+				new BulkDraftPostTask.ResultListener() {
+					
+					@Override
+					public void notifySuccess() {
+						cursor.requery();
+						showMessage("post drafts done");
+					}
+					
+					@Override
+					public void notifyError(String message) {
+						cursor.requery();
+						showMessage(message);
+					}
+				});
+		dialog.setOnCancelListener(new OnCancelListener() {
+			
+			@Override
+			public void onCancel(DialogInterface dialog) {
+				task.cancel(false);
+				showMessage("post cancelled");
+				cursor.requery();
+			}
+		});
+		task.execute("");
+		return dialog;
 	}
 }
