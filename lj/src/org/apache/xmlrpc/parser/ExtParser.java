@@ -29,7 +29,7 @@ import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
-import com.google.code.karino.var.QName;
+import com.googlecode.karino.var.QName;
 
 /**
  * Base class for parsing external XML representations, like DOM, or JAXB.

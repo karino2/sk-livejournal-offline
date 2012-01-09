@@ -31,7 +31,7 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
-import com.google.code.karino.var.QName;
+import com.googlecode.karino.var.QName;
 
 /**
  * Parser for an array of objects, as created by

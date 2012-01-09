@@ -1,4 +1,4 @@
-package com.google.code.karino.var;
+package com.googlecode.karino.var;
 
 public class XMLConstants {
 	public static final String XML_NS_PREFIX = "xml";

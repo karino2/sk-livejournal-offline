@@ -1,6 +1,6 @@
-package com.google.code.karino;
+package com.googlecode.karino;
 
-import com.google.code.karino.BlogConfigConstants.BlogInterfaceType;
+import com.googlecode.karino.BlogConfigConstants.BlogInterfaceType;
 
 import android.util.Log;
 

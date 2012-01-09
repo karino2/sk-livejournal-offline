@@ -1,4 +1,4 @@
-package com.google.code.karino.db;
+package com.googlecode.karino.db;
 
 import android.content.Context;
 
@@ -6,7 +6,7 @@ public class DBConstants {
 	// the db on device:
 	// /data/data/fi.iki.joker.mobilogger/databases/MobiLoggerDB.db
 	public static final String DB_NAME = "lj.db";
-	public static final String DB_FULL_PATH = "/data/data/com.google.code.karino/databases/"
+	public static final String DB_FULL_PATH = "/data/data/com.googlecode.karino/databases/"
 			+ DB_NAME;
 	public static final int DB_VER = 1;
 	public static final int DB_MODE = Context.MODE_PRIVATE;

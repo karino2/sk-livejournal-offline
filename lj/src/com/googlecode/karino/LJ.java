@@ -1,11 +1,11 @@
-package com.google.code.karino;
+package com.googlecode.karino;
 
-import com.google.code.karino.db.BlogDBAdapter;
 
-import com.google.code.karino.R;
+import com.googlecode.karino.R;
+import com.googlecode.karino.db.BlogDBAdapter;
+
 import android.app.Activity;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -65,7 +65,7 @@ public class LJ extends Activity {
 
 	public boolean onCreateOptionsMenu(Menu menu) {
 		boolean result = super.onCreateOptionsMenu(menu);
-		menu.add(0, Menu.FIRST, Menu.NONE, com.google.code.karino.R.string.about);
+		menu.add(0, Menu.FIRST, Menu.NONE, com.googlecode.karino.R.string.about);
 		return result;
 	}
 

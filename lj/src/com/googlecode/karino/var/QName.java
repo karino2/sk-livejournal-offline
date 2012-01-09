@@ -1,4 +1,4 @@
-package com.google.code.karino.var;
+package com.googlecode.karino.var;
 
 import java.io.Serializable;
 

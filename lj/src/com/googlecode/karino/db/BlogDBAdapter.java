@@ -1,8 +1,8 @@
-package com.google.code.karino.db;
+package com.googlecode.karino.db;
 
 import java.util.Date;
 
-import com.google.code.karino.ProfileManager;
+import com.googlecode.karino.ProfileManager;
 
 
 import android.content.ContentValues;

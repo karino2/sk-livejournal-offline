@@ -1,4 +1,4 @@
-package com.google.code.karino.db;
+package com.googlecode.karino.db;
 
 import java.util.StringTokenizer;
 
@@ -7,8 +7,8 @@ import java.util.StringTokenizer;
 import org.apache.ws.commons.util.Base64;
 import org.apache.ws.commons.util.Base64.DecodingException;
 
-import com.google.code.karino.BlogPostEditor;
-import com.google.code.karino.db.ImageEmbedSpan;
+import com.googlecode.karino.BlogPostEditor;
+import com.googlecode.karino.db.ImageEmbedSpan;
 
 import android.content.Context;
 import android.graphics.Typeface;

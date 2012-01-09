@@ -31,7 +31,7 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
-import com.google.code.karino.var.QName;
+import com.googlecode.karino.var.QName;
 
 /**
  * A SAX parser for an {@link org.apache.xmlrpc.server.XmlRpcServer}'s response.

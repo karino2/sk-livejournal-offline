@@ -1,4 +1,4 @@
-package com.google.code.karino.util;
+package com.googlecode.karino.util;
 
 import android.app.AlertDialog;
 import android.app.Dialog;

@@ -1,7 +1,7 @@
-package com.google.code.karino;
+package com.googlecode.karino;
 
-import com.google.code.karino.db.BlogDBAdapter;
-import com.google.code.karino.db.BlogEntryBean;
+import com.googlecode.karino.db.BlogDBAdapter;
+import com.googlecode.karino.db.BlogEntryBean;
 
 import android.app.Activity;
 import android.app.ProgressDialog;

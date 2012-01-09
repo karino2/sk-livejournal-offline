@@ -1,4 +1,4 @@
-package com.google.code.karino.db;
+package com.googlecode.karino.db;
 
 import java.util.Date;
 

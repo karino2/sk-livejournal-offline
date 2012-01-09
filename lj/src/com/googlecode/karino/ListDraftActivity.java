@@ -1,11 +1,12 @@
-package com.google.code.karino;
+package com.googlecode.karino;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import com.google.code.karino.db.BlogDBAdapter;
 
-import com.google.code.karino.R;
+import com.googlecode.karino.R;
+import com.googlecode.karino.db.BlogDBAdapter;
+
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;

@@ -25,8 +25,8 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import com.google.code.karino.var.NamespaceContext;
-import com.google.code.karino.var.XMLConstants;
+import com.googlecode.karino.var.NamespaceContext;
+import com.googlecode.karino.var.XMLConstants;
 
 
 /**

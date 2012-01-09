@@ -1,4 +1,4 @@
-package com.google.code.karino;
+package com.googlecode.karino;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -6,7 +6,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 
-import com.google.code.karino.db.BlogDBAdapter;
+import com.googlecode.karino.R;
+import com.googlecode.karino.db.BlogDBAdapter;
 
 import android.app.Activity;
 import android.database.Cursor;

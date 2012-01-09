@@ -29,7 +29,7 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
-import com.google.code.karino.var.QName;
+import com.googlecode.karino.var.QName;
 
 /**
  * Abstract base class of a parser, that invokes other type parsers recursively.

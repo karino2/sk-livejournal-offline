@@ -1,6 +1,4 @@
-package com.google.code.karino.db;
-
-import com.google.code.karino.R;
+package com.googlecode.karino.db;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -9,22 +7,23 @@ import android.graphics.drawable.Drawable;
 import android.text.style.ImageSpan;
 import android.util.Log;
 
+import com.googlecode.karino.R;
+
 /**
- * This produces the small "html" image to indicate that a buffer that's opened
- * in entry editor has a HTML span attached to it.
+ * This produces the small "IMG" image to indicate that a buffer that's opened
+ * in entry editor has a image span attached to it.
  * 
  * @author juhak
  */
 
-public class HTMLEmbedSpan extends ImageSpan {
-
-	private static final String TAG = "HTMLEmbedSpan";
-	private String myHtml = null;
+public class ImageEmbedSpan extends ImageSpan {
+	private static final String TAG = "ImageEmbedSpan";
+	private String mySrc = null;
 	private Context parentRef = null;
 
-	public HTMLEmbedSpan(String html, Context caller) {
-		super(caller, R.drawable.html_icon);
-		this.myHtml = html;
+	public ImageEmbedSpan(String src, Context caller) {
+		super(caller, R.drawable.img_icon);
+		this.mySrc = src;
 		this.parentRef = caller;
 	}
 
@@ -38,7 +37,7 @@ public class HTMLEmbedSpan extends ImageSpan {
 		} else {
 			return null;
 		}
-		Drawable d = resources.getDrawable(R.drawable.html_icon);
+		Drawable d = resources.getDrawable(R.drawable.img_icon);
 		d.setVisible(true, true);
 		d.setAlpha(255);
 		d.setBounds(new Rect(0, 0, d.getIntrinsicWidth(), d
@@ -46,12 +45,12 @@ public class HTMLEmbedSpan extends ImageSpan {
 		return d;
 	}
 
-	public String getHtml() {
-		return myHtml;
+	public String getSrc() {
+		return mySrc;
 	}
 
-	public void setHtml(String myHtml) {
-		this.myHtml = myHtml;
+	public void setSrc(String mySrc) {
+		this.mySrc = mySrc;
 	}
 
 }
