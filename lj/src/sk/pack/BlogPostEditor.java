@@ -171,7 +171,7 @@ public class BlogPostEditor extends Activity {
 			b.setBlogEntry(helper.SpannableToXHTML(bBody.getText()));
 			b.setTitle(bSubject.getText().toString());
 			mDbHelper.saveDraft(b);
-			finish();
+			showMessage("saved");
 			return true;
 		}
 		return false;
@@ -193,8 +193,12 @@ public class BlogPostEditor extends Activity {
 	private void showPublishedStatus() {
 		publishProgress.dismiss();
 		if (publishStatus == 5) {
+			/*
 			AlertUtil.showAlert(this, getString(R.string.publish_status),
 					getString(R.string.publish_ok));
+					*/
+			// I don't like unnecessary dialog
+			showMessage(getString(R.string.done));
 			if(b.getId() != -1)
 			{
 				// also saved in draft. delete it.
