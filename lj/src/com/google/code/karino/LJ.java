@@ -1,6 +1,8 @@
-package sk.pack;
+package com.google.code.karino;
 
-import sk.pack.db.BlogDBAdapter;
+import com.google.code.karino.db.BlogDBAdapter;
+
+import com.google.code.karino.R;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
@@ -63,7 +65,7 @@ public class LJ extends Activity {
 
 	public boolean onCreateOptionsMenu(Menu menu) {
 		boolean result = super.onCreateOptionsMenu(menu);
-		menu.add(0, Menu.FIRST, Menu.NONE, sk.pack.R.string.about);
+		menu.add(0, Menu.FIRST, Menu.NONE, com.google.code.karino.R.string.about);
 		return result;
 	}
 

@@ -1,4 +1,4 @@
-package sk.pack.db;
+package com.google.code.karino.db;
 
 /**
  * This JavaBean is used to carry blog settings in and out of the DB.

@@ -33,7 +33,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import sk.pack.R;
+import com.google.code.karino.R;
 import com.sadko.bursaq.BursaqConstants;
 import com.sadko.bursaq.GotoBursaqActivity;
 

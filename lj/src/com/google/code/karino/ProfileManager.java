@@ -1,4 +1,4 @@
-package sk.pack;
+package com.google.code.karino;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -6,7 +6,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 
-import sk.pack.db.BlogDBAdapter;
+import com.google.code.karino.db.BlogDBAdapter;
+
 import android.app.Activity;
 import android.database.Cursor;
 import android.util.Log;

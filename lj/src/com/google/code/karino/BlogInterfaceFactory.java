@@ -1,7 +1,8 @@
-package sk.pack;
+package com.google.code.karino;
+
+import com.google.code.karino.BlogConfigConstants.BlogInterfaceType;
 
 import android.util.Log;
-import sk.pack.BlogConfigConstants.BlogInterfaceType;
 
 /**
  * Serves singleton instances of blog interfaces to callers. Again, may be an

@@ -21,12 +21,13 @@ package org.apache.xmlrpc.parser;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-import sk.pack.var.QName;
 
 import org.apache.ws.commons.util.Base64;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
+
+import com.google.code.karino.var.QName;
 
 /**
  * A parser for base64 elements.

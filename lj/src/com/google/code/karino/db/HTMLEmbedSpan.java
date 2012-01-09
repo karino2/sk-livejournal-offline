@@ -1,4 +1,6 @@
-package sk.pack.db;
+package com.google.code.karino.db;
+
+import com.google.code.karino.R;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -6,7 +8,6 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.text.style.ImageSpan;
 import android.util.Log;
-import sk.pack.R;
 
 /**
  * This produces the small "html" image to indicate that a buffer that's opened

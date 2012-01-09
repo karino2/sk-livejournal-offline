@@ -21,7 +21,6 @@ package org.apache.xmlrpc.parser;
 import java.util.HashMap;
 import java.util.Map;
 
-import sk.pack.var.QName;
 
 import org.apache.ws.commons.util.NamespaceContextImpl;
 import org.apache.xmlrpc.common.TypeFactory;
@@ -31,6 +30,8 @@ import org.apache.xmlrpc.serializer.TypeSerializerImpl;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
+
+import com.google.code.karino.var.QName;
 
 /**
  * {@link org.apache.xmlrpc.parser.TypeParser} implementation for maps.

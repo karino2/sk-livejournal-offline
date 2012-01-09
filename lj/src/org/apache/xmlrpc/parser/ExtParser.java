@@ -21,7 +21,6 @@ package org.apache.xmlrpc.parser;
 import java.util.ArrayList;
 import java.util.List;
 
-import sk.pack.var.QName;
 
 import org.apache.xmlrpc.serializer.XmlRpcWriter;
 import org.xml.sax.Attributes;
@@ -29,6 +28,8 @@ import org.xml.sax.ContentHandler;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
+
+import com.google.code.karino.var.QName;
 
 /**
  * Base class for parsing external XML representations, like DOM, or JAXB.

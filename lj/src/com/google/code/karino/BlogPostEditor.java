@@ -1,15 +1,7 @@
-package sk.pack;
+package com.google.code.karino;
 
-import sk.pack.db.BlogDBAdapter;
-import sk.pack.db.BlogEntryBean;
-import sk.pack.db.SpannableBufferHelper;
-import sk.pack.db.BlogDBAdapter.Account;
-import sk.pack.util.AlertUtil;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -27,6 +19,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.code.karino.db.BlogDBAdapter;
+import com.google.code.karino.db.BlogDBAdapter.Account;
+import com.google.code.karino.db.BlogEntryBean;
+import com.google.code.karino.db.SpannableBufferHelper;
+import com.google.code.karino.util.AlertUtil;
+
 public class BlogPostEditor extends Activity {
 	EditText bSubject, bBody;
 	private static BlogEntryBean b = null;
@@ -43,8 +41,8 @@ public class BlogPostEditor extends Activity {
 		setContentView(R.layout.editor);
 		helper = new SpannableBufferHelper();
 		
-		bBody = (EditText) findViewById(sk.pack.R.id.edit_et_post);
-		bSubject = (EditText) findViewById(sk.pack.R.id.edit_et_subject);
+		bBody = (EditText) findViewById(com.google.code.karino.R.id.edit_et_post);
+		bSubject = (EditText) findViewById(com.google.code.karino.R.id.edit_et_subject);
 		b = new BlogEntryBean();
 		mDbHelper = new BlogDBAdapter(this);
 		try {

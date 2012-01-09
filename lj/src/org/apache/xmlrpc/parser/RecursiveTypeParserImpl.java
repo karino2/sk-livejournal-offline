@@ -18,7 +18,6 @@
  */
 package org.apache.xmlrpc.parser;
 
-import sk.pack.var.QName;
 
 import org.apache.ws.commons.util.NamespaceContextImpl;
 import org.apache.xmlrpc.XmlRpcException;
@@ -29,6 +28,8 @@ import org.apache.xmlrpc.serializer.XmlRpcWriter;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
+
+import com.google.code.karino.var.QName;
 
 /**
  * Abstract base class of a parser, that invokes other type parsers recursively.

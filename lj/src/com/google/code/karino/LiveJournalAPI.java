@@ -1,4 +1,4 @@
-package sk.pack;
+package com.google.code.karino;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -6,6 +6,9 @@ import org.apache.xmlrpc.XmlRpcException;
 import org.apache.xmlrpc.client.XmlRpcClient;
 import org.apache.xmlrpc.client.XmlRpcClientConfigImpl;
 import org.apache.xmlrpc.client.XmlRpcLiteHttpTransportFactory;
+
+import com.google.code.karino.util.AlertUtil;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -13,7 +16,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.widget.EditText;
-import sk.pack.util.AlertUtil;
+import com.google.code.karino.R;
 
 /**
  * LiveJournal works with a similar type of XML-RPC interface as does the

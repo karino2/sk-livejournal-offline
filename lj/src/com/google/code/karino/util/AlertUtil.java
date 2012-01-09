@@ -1,4 +1,4 @@
-package sk.pack.util;
+package com.google.code.karino.util;
 
 import android.app.AlertDialog;
 import android.app.Dialog;

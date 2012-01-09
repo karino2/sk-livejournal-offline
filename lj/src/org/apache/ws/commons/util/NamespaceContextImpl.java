@@ -25,8 +25,9 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import sk.pack.var.NamespaceContext;
-import sk.pack.var.XMLConstants;
+import com.google.code.karino.var.NamespaceContext;
+import com.google.code.karino.var.XMLConstants;
+
 
 /**
  * Default implementation of

@@ -1,4 +1,4 @@
-package sk.pack;
+package com.google.code.karino;
 
 import java.util.LinkedList;
 

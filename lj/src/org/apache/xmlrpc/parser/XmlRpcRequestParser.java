@@ -21,7 +21,6 @@ package org.apache.xmlrpc.parser;
 import java.util.ArrayList;
 import java.util.List;
 
-import sk.pack.var.QName;
 
 import org.apache.ws.commons.util.NamespaceContextImpl;
 import org.apache.xmlrpc.common.TypeFactory;
@@ -29,6 +28,8 @@ import org.apache.xmlrpc.common.XmlRpcStreamConfig;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
+
+import com.google.code.karino.var.QName;
 
 /**
  * A SAX parser for an {@link org.apache.xmlrpc.client.XmlRpcClient}'s request.

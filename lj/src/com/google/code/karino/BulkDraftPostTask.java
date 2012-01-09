@@ -1,7 +1,8 @@
-package sk.pack;
+package com.google.code.karino;
 
-import sk.pack.db.BlogDBAdapter;
-import sk.pack.db.BlogEntryBean;
+import com.google.code.karino.db.BlogDBAdapter;
+import com.google.code.karino.db.BlogEntryBean;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;

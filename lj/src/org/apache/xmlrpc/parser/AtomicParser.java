@@ -18,11 +18,12 @@
  */
 package org.apache.xmlrpc.parser;
 
-import sk.pack.var.QName;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
+
+import com.google.code.karino.var.QName;
 
 /**
  * Abstract base implementation of {@link org.apache.xmlrpc.parser.TypeParser}

@@ -1,4 +1,4 @@
-package sk.pack.db;
+package com.google.code.karino.db;
 
 /**
  * This JavaBean is used as a transfer object to carry blog entries to SQLite3

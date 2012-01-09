@@ -1,4 +1,4 @@
-package sk.pack.var;
+package com.google.code.karino.var;
 
 import java.util.Iterator;
 
