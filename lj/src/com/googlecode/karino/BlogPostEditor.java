@@ -334,6 +334,7 @@ public class BlogPostEditor extends Activity {
 		super.onSaveInstanceState(outState);
 		outState.putString("BLOG_SUBJECT", bSubject.getText().toString());
 		outState.putString("BLOG_BODY", helper.SpannableToXHTML(bBody.getText()));
+		outState.putLong("BLOG_DRAFT_ID", b.getId());
 	}
 	
 	@Override
@@ -343,6 +344,8 @@ public class BlogPostEditor extends Activity {
 		bSubject.setText(savedInstanceState.getString("BLOG_SUBJECT"));
 		Spannable text = helper.XHTMLToSpannable(savedInstanceState.getString("BLOG_BODY"));
 		bBody.setText(text);
+		
+		b.setId(savedInstanceState.getLong("BLOG_DRAFT_ID"));
 		
 	}
 
