@@ -167,18 +167,19 @@ public class BlogDBAdapter {
 		return ent;
 	}
 
-	public void saveDraft(BlogEntryBean b) {
+	public long saveDraft(BlogEntryBean b) {
 		ContentValues values = new ContentValues();
 		values.put("subject", b.getTitle());
 		values.put("body", b.getBlogEntry().toString());
 		if(b.getId() == -1)
 		{
 			values.put("date", (new Date()).getTime());
-			mDb.insert(DRAFTS_TABLE, null, values);
+			return mDb.insert(DRAFTS_TABLE, null, values);
 		}
 		else
 		{
 			mDb.update(DRAFTS_TABLE, values, "_id=?", new String[]{ String.valueOf(b.getId()) });
+			return b.getId();
 		}
 	}
 

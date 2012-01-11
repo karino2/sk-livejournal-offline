@@ -169,7 +169,9 @@ public class BlogPostEditor extends Activity {
 		case R.id.item_save:
 			b.setBlogEntry(helper.SpannableToXHTML(bBody.getText()));
 			b.setTitle(bSubject.getText().toString());
-			mDbHelper.saveDraft(b);
+			long draftId = mDbHelper.saveDraft(b);
+			if(b.getId() == -1)
+				b.setId(draftId);
 			showMessage("saved");
 			return true;
 		}
