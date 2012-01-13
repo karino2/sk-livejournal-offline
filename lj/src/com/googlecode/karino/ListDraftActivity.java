@@ -111,7 +111,6 @@ public class ListDraftActivity extends ListActivity {
 		{
 		case R.id.item_post_all:
 			showDialog(POST_ALL_DIALOG_ID);
-			postAll();
 			break;
 		}
 		return super.onOptionsItemSelected(item);
