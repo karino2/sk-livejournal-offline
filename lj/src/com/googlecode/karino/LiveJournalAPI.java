@@ -2,6 +2,10 @@ package com.googlecode.karino;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Hashtable;
+
 import org.apache.xmlrpc.XmlRpcException;
 import org.apache.xmlrpc.client.XmlRpcClient;
 import org.apache.xmlrpc.client.XmlRpcClientConfigImpl;
@@ -260,32 +264,34 @@ public class LiveJournalAPI implements BlogInterface {
 			config.setServerURL(new URL(localPostUrl));
 		} catch (MalformedURLException e) {
 		}
-		// The blog id number, as String
-		String blogIdNum = this.configBlogID;
-		Boolean publish = new Boolean(true);
-		if (isDraft) {
-			publish = new Boolean(false);
-		} else {
-			publish = new Boolean(true);
-		}
-		// LJ just wants a string body with title on the first row.
-		String postBody = "<title>" + title + "</title>\n" + content.toString();
+		
+		Hashtable struct = new Hashtable();
+		struct.put("username", username);
+		struct.put("password", password);
+		struct.put("event", content.toString());
+		struct.put("subject", title);
+		struct.put("lineendings", "unix");// pc?
+		// Date d = createdDate;
+		Date d = new Date();
+		struct.put("year",d.getYear()+1900);
+		struct.put("mon", d.getMonth()+1);
+		struct.put("day", d.getDate());
+		struct.put("hour", d.getHours());
+		struct.put("min", d.getMinutes());
+		
 		XmlRpcClient client = new XmlRpcClient();
-		Object[] params = new Object[] { LJ_APPKEY, "" + blogIdNum, username,
-				password, postBody, publish };
-		client.setTransportFactory(new XmlRpcLiteHttpTransportFactory(client));
+		
+		Object[] params = new Object[] { struct };
+		// client.setTransportFactory(new XmlRpcLiteHttpTransportFactory(client));
 		client.setConfig(config);
-		String postID = null;
 		try {
-			postID = (String) client.execute("blogger.newPost", params);
+			HashMap result = (HashMap) client.execute("LJ.XMLRPC.postevent", params);
+			if(!result.containsKey("itemid") || result.get("itemid").equals(""))
+				return false;
+			return true;
 		} catch (XmlRpcException e) {
-		}
-		if ((postID == null) || postID.equals("")) {
+			e.printStackTrace();
 			return false;
-		} else if (postID.matches("" + this.configBlogID + "\\:(\\d+)")) {
-			return true;
-		} else {
-			return true;
 		}
 	}
 
@@ -323,7 +329,7 @@ public class LiveJournalAPI implements BlogInterface {
 	}
 
 	public String getPostUrl(String authToken) {
-		return "http://www.livejournal.com/interface/blogger/";
+		return "http://www.livejournal.com/interface/xmlrpc";
 	}
 
 	public CharSequence getConfigEditorData() {

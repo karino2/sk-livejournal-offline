@@ -1,5 +1,7 @@
 package com.googlecode.karino;
 
+import java.util.NoSuchElementException;
+
 import com.googlecode.karino.db.BlogDBAdapter;
 import com.googlecode.karino.db.BlogEntryBean;
 
@@ -53,16 +55,22 @@ public class BulkDraftPostTask extends AsyncTask<String, String, String> {
 				{
 					BlogEntryBean draft = db.draftFromCurrent(cursor);
 					
-					boolean success = blogApi.createPost(parent, auth_id, postUrl,
-							null, draft.getTitle(), null, draft.getBlogEntry().toString(), account.login, account.login, false);
-					if(success)
+					try
 					{
-						publishProgress("post (" + draft.getTitle() + ")");
-						db.deleteDraft(draft.getId());
-					}
-					else
+						boolean success = blogApi.createPost(parent, auth_id, postUrl,
+								null, draft.getTitle(), null, draft.getBlogEntry().toString(), account.login, account.login, false);
+						if(success)
+						{
+							publishProgress("post (" + draft.getTitle() + ")");
+							db.deleteDraft(draft.getId());
+						}
+						else
+						{
+							errorMessage = "failed to post some drafts";
+						}
+					}catch(NoSuchElementException e)
 					{
-						errorMessage = "failed to post some drafts";
+						errorMessage = "failed to post some drafts, no such element.";
 					}
 				}
 				while(cursor.moveToNext());
