@@ -67,10 +67,12 @@ public class BulkDraftPostTask extends AsyncTask<String, String, String> {
 						else
 						{
 							errorMessage = "failed to post some drafts";
+							break;
 						}
 					}catch(NoSuchElementException e)
 					{
 						errorMessage = "failed to post some drafts, no such element.";
+						break;
 					}
 				}
 				while(cursor.moveToNext());
