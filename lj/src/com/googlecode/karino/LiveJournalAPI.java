@@ -6,11 +6,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Hashtable;
 
-import org.apache.xmlrpc.XmlRpcException;
-import org.apache.xmlrpc.client.XmlRpcClient;
-import org.apache.xmlrpc.client.XmlRpcClientConfigImpl;
-import org.apache.xmlrpc.client.XmlRpcLiteHttpTransportFactory;
-
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -22,6 +17,10 @@ import android.widget.EditText;
 
 import com.googlecode.karino.R;
 import com.googlecode.karino.util.AlertUtil;
+
+import de.timroes.axmlrpc.XMLRPCClient;
+import de.timroes.axmlrpc.XMLRPCException;
+import de.timroes.axmlrpc.XMLRPCServerException;
 
 /**
  * LiveJournal works with a similar type of XML-RPC interface as does the
@@ -179,34 +178,38 @@ public class LiveJournalAPI implements BlogInterface {
 				status.putString(MSG_KEY, "1");
 				statusMsg.setData(status);
 				mHandler.sendMessage(statusMsg);
-				XmlRpcClientConfigImpl config = new XmlRpcClientConfigImpl();
 				String localPostUrl = getPostUrl(null);
+				URL url;
+				try {
+					url = new URL(localPostUrl);
+				} catch (MalformedURLException e1) {
+					statusMsg = mHandler.obtainMessage();
+					status.putString(STATUS_KEY, STATUS_RESPONSE_NULL);
+					status.putString(MSG_KEY, "1");
+					statusMsg.setData(status);
+					mHandler.sendMessage(statusMsg);
+					mHandler.post(mFetchResults);
+					return;
+				}
+				XMLRPCClient client = new XMLRPCClient(url);
 				statusMsg = mHandler.obtainMessage();
 				status.putString(MSG_KEY, "2");
 				statusMsg.setData(status);
 				mHandler.sendMessage(statusMsg);
-				try {
-					config.setServerURL(new URL(localPostUrl));
-				} catch (MalformedURLException e) {
-				}
 				statusMsg = mHandler.obtainMessage();
 				status.putString(MSG_KEY, "3");
 				statusMsg.setData(status);
 				mHandler.sendMessage(statusMsg);
-				XmlRpcClient client = new XmlRpcClient();
 				Object[] params = new Object[] { LJ_APPKEY, fetchUsername,
 						fetchPassword };
-				client.setTransportFactory(new XmlRpcLiteHttpTransportFactory(
-						client));
-				client.setConfig(config);
 				Object resobject = null;
 				statusMsg = mHandler.obtainMessage();
 				status.putString(MSG_KEY, "4");
 				statusMsg.setData(status);
 				mHandler.sendMessage(statusMsg);
 				try {
-					resobject = client.execute("blogger.getUsersBlogs", params);
-				} catch (XmlRpcException e) {
+					resobject = client.call("blogger.getUsersBlogs", params);
+				} catch(XMLRPCException ex) {
 					statusMsg = mHandler.obtainMessage();
 					status.putString(STATUS_KEY, STATUS_RESPONSE_NULL);
 					status.putString(MSG_KEY, "5");
@@ -257,12 +260,13 @@ public class LiveJournalAPI implements BlogInterface {
 
 			}
 		}
-		XmlRpcClientConfigImpl config = new XmlRpcClientConfigImpl();
 		// check the config var
 		String localPostUrl = getPostUrl(authToken);
+		URL url;
 		try {
-			config.setServerURL(new URL(localPostUrl));
+			url = new URL(localPostUrl);
 		} catch (MalformedURLException e) {
+			return false;
 		}
 		
 		Hashtable struct = new Hashtable();
@@ -279,17 +283,16 @@ public class LiveJournalAPI implements BlogInterface {
 		struct.put("hour", d.getHours());
 		struct.put("min", d.getMinutes());
 		
-		XmlRpcClient client = new XmlRpcClient();
+		XMLRPCClient client = new XMLRPCClient(url);
 		
 		Object[] params = new Object[] { struct };
 		// client.setTransportFactory(new XmlRpcLiteHttpTransportFactory(client));
-		client.setConfig(config);
 		try {
-			HashMap result = (HashMap) client.execute("LJ.XMLRPC.postevent", params);
+			HashMap result = (HashMap) client.call("LJ.XMLRPC.postevent", params);
 			if(!result.containsKey("itemid") || result.get("itemid").equals(""))
 				return false;
 			return true;
-		} catch (XmlRpcException e) {
+		} catch (XMLRPCException e) {
 			e.printStackTrace();
 			return false;
 		}

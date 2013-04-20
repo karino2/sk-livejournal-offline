@@ -2,13 +2,11 @@ package com.googlecode.karino.db;
 
 import java.util.StringTokenizer;
 
-//import com.google.gdata.util.common.util.Base64;
-//import com.google.gdata.util.common.util.Base64DecoderException;
-import org.apache.ws.commons.util.Base64;
-import org.apache.ws.commons.util.Base64.DecodingException;
 
 import com.googlecode.karino.BlogPostEditor;
 import com.googlecode.karino.db.ImageEmbedSpan;
+
+import de.timroes.base64.Base64;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -383,7 +381,7 @@ public class SpannableBufferHelper {
 	 * @param xhtml
 	 * @return
 	 */
-
+	
 	public String getSerializedSequence(CharSequence xhtml) {
 		SpannableStringBuilder ssb = new SpannableStringBuilder(xhtml);
 		Object[] spans = ssb.getSpans(0, ssb.length(), CharacterStyle.class);
@@ -446,12 +444,7 @@ public class SpannableBufferHelper {
 		this.c = c;
 		int item = 2;
 		byte[] content = null;
-		try {
-			content = Base64.decode(contentBase64);
-		} catch (DecodingException de) {
-			Log.e(TAG, "Failed to decode content from base 64 to byte array!");
-			return null;
-		}
+		content = Base64.decode(contentBase64);
 		String res = new String(content);
 		SpannableStringBuilder ssb = new SpannableStringBuilder(res);
 		// try to parse styles only if there are some.

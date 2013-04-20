@@ -34,8 +34,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.googlecode.karino.R;
-import com.sadko.bursaq.BursaqConstants;
-import com.sadko.bursaq.GotoBursaqActivity;
 
 /**
  * About dialog with Bursaq payment option integrated
@@ -62,7 +60,6 @@ public class AboutActivity extends Activity {
 		final ListView actionsLst = (ListView) findViewById(R.id.about_actions_lst);
 		actionsLst.setAdapter(new ArrayAdapter(this,
 				R.layout.about_action_list_item, new String[] {
-						getString(R.string.about_donate),
 						getString(R.string.about_goto_project_page),
 						getString(R.string.about_more_content) }));
 
@@ -71,8 +68,6 @@ public class AboutActivity extends Activity {
 					public void onItemClick(AdapterView parent, View v,
 							int position, long id) {
 						if (position == 0) {
-							donate();
-						} else if (position == 1) {
 							goToProjectPage();
 						} else {
 							getMoreContent();
@@ -98,26 +93,6 @@ public class AboutActivity extends Activity {
 		return version;
 	}
 
-	/**
-	 * Donate to project authors using Bursaq mobile payments manager
-	 */
-	private void donate() {
-		final Intent intent = new Intent();
-		intent.setClass(this, GotoBursaqActivity.class);
-
-		// set services to show in Bursaq
-		final String bursaqPubName = getString(R.string.bursaq_publisher);
-		final String bursaqAppName = getString(R.string.bursaq_appname);
-		final String bursaqDonate1 = getString(R.string.bursaq_donate1);
-		final String bursaqDonate2 = getString(R.string.bursaq_donate2);
-
-		intent.putExtra(BursaqConstants.PARAM_PUBLISHER, bursaqPubName);
-		intent.putExtra(BursaqConstants.PARAM_PRODUCT_NAME, bursaqAppName);
-		intent.putExtra(BursaqConstants.PARAM_SERVICE_NAMES, new String[] {
-				bursaqDonate1, bursaqDonate2 });
-
-		startActivity(intent);
-	}
 
 	/**
 	 * Open project web page in web browser
