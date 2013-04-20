@@ -151,10 +151,15 @@ public class BlogDBAdapter {
 	{
 		Cursor cursor = mDb.query(DRAFTS_TABLE, new String[]{"_id", "date", "subject", "body" },
 				"_id = ?", new String[]{ String.valueOf(id) }, null, null, null);
-		cursor.moveToFirst();
-		BlogEntryBean ent = draftFromCurrent(cursor);
-		cursor.close();
-		return ent;
+		try {
+			if(cursor.getCount() ==0)
+				return null;
+			cursor.moveToFirst();
+			BlogEntryBean ent = draftFromCurrent(cursor);
+			return ent;
+		} finally {
+			cursor.close();
+		}
 	}
 
 	public BlogEntryBean draftFromCurrent(Cursor cursor) {

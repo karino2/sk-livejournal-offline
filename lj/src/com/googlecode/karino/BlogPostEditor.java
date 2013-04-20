@@ -52,8 +52,9 @@ public class BlogPostEditor extends Activity {
 		}
 		readAccount();
 		long draftId = getIntent().getLongExtra("DraftID", -1);
-		if(draftId != -1)
+		if(draftId != -1) {
 			loadDraft(draftId);
+		}
 		
 		((Button)findViewById(R.id.edit_bt_bold)).setOnClickListener(new OnClickListener(){
 
@@ -176,7 +177,10 @@ public class BlogPostEditor extends Activity {
 	}
 	
 	private void loadDraft(long id) {
-		b = mDbHelper.fetchDraft(id);
+		BlogEntryBean entry = mDbHelper.fetchDraft(id);
+		if(entry == null)
+			return;
+		b = entry;
 		bSubject.setText(b.getTitle());
 		Spannable text = helper.XHTMLToSpannable(b.getBlogEntry());
 		bBody.setText(text);
